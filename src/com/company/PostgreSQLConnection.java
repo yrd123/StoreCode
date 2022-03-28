@@ -12,7 +12,7 @@ public class PostgreSQLConnection {
             Statement s = conn.createStatement();
 
             String sql =  "create table admin(
-                username varchar(50),
+                username varch ar(50),
                 password varchar(50)
             );";
 
@@ -21,7 +21,7 @@ public class PostgreSQLConnection {
             */
 
 
-            /*String sql =  "insert into admin values('Darshit','Darshit123');";
+            /*String sql =  "insert into admin values('Mayur','mstmstmst');";
 
             rowsAffected = s.executeUpdate(sql);
             System.out.println(rowsAffected);

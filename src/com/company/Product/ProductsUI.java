@@ -32,7 +32,8 @@ public class ProductsUI extends JFrame implements ActionListener {
 
         JPanel addProductPanel = new JPanel();
         addProductPanel.setLayout(null);
-        addProductPanel.setBounds(20,20,600,760);
+        //UI addProductPanel.setBounds(20,20,600,760);
+        addProductPanel.setBounds(20,20,600,790);
         addProductPanel.setBackground(Color.WHITE);
         add(addProductPanel);
 
@@ -169,7 +170,7 @@ public class ProductsUI extends JFrame implements ActionListener {
         add(lblSearch);*/
 
         txtSearch = new JPlaceholderTextField("Search");
-        txtSearch.setBounds(641,23,850,40);
+        txtSearch.setBounds(641,23,770,40);
         txtSearch.setFont(helvetica_neue);
         add(txtSearch);
         txtSearch.addKeyListener(new KeyAdapter() {
@@ -197,14 +198,13 @@ public class ProductsUI extends JFrame implements ActionListener {
         productsTable.setShowVerticalLines(false);
         productsTable.setRowHeight(30);
         JScrollPane sp = new JScrollPane();
-        sp.setBounds(640,75,850,705);
+        sp.setBounds(640,75,770,740);
         sp.setViewportView(productsTable);
         add(sp);
         //todo scroll
 
         loadData();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
         setVisible(true);
 
         productsTable.addMouseListener(new MouseAdapter() {

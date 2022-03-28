@@ -8,14 +8,22 @@ import com.company.SCUtils;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
+
+
+
 import java.awt.Font;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.PrinterJob;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import javax.print.DocPrintJob;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -63,32 +71,37 @@ public class CartUI extends JFrame implements ActionListener {
         Font bold_font = new Font("",Font.BOLD,11);
         JPanel topPanel = new JPanel();
         topPanel.setLayout(null);
-        topPanel.setBounds(10,10,1520,40);
+        topPanel.setBounds(10,10,1415,40);
+        //UI topPanel.setBounds(10,10,1520,40);
         topPanel.setBackground(Color.WHITE);
         add(topPanel);
 
 
         JPanel cart1Panel = new JPanel();
         cart1Panel.setLayout(null);
-        cart1Panel.setBounds(10,60,750,360);
+        cart1Panel.setBounds(10,60,700,360);
+        //UI cart1Panel.setBounds(10,60,750,360);
         cart1Panel.setBackground(new Color(255,255,255));
         add(cart1Panel);
 
         JPanel cart2Panel = new JPanel();
         cart2Panel.setLayout(null);
-        cart2Panel.setBounds(775,60,750,360);
+        cart2Panel.setBounds(725,60,700,360);
+        //UI cart2Panel.setBounds(775,60,750,360);
         cart2Panel.setBackground(new Color(255,255,255));
         add(cart2Panel);
 
         JPanel cart3Panel = new JPanel();
         cart3Panel.setLayout(null);
-        cart3Panel.setBounds(10,430,750,370);
+        cart3Panel.setBounds(10,430,700,370);
+        //UI cart3Panel.setBounds(10,430,750,370);
         cart3Panel.setBackground(new Color(255,255,255));
         add(cart3Panel);
 
         JPanel cart4Panel = new JPanel();
         cart4Panel.setLayout(null);
-        cart4Panel.setBounds(775,430,750,370);
+        cart4Panel.setBounds(725,430,700,370);
+        //UI cart4Panel.setBounds(775,430,750,370);
         cart4Panel.setBackground(new Color(255,255,255));
         add(cart4Panel);
 
@@ -116,14 +129,14 @@ public class CartUI extends JFrame implements ActionListener {
         btnCart1Clear.addActionListener(this);*/
 
         btnAddProductWithId = new RoundButton("Add Product with Id");
-        btnAddProductWithId.setBounds(440,5,300,30);
+        btnAddProductWithId.setBounds(390,5,300,30);
         btnAddProductWithId.setFont(my_font);
 
         topPanel.add(btnAddProductWithId);
         btnAddProductWithId.addActionListener(this);
 
         btnBack = new RoundButton("Back");
-        btnBack.setBounds(775,5,300,30);
+        btnBack.setBounds(725,5,300,30);
         btnBack.setFont(my_font);
         topPanel.add(btnBack);
         btnBack.addActionListener(this);
@@ -133,7 +146,8 @@ public class CartUI extends JFrame implements ActionListener {
         UIManager.getDefaults().put("TableHeader.cellBorder" , BorderFactory.createEmptyBorder(0,3,0,0));
 
         JScrollPane sp1 = new JScrollPane();
-        sp1.setBounds(15,15,725,295);
+        sp1.setBounds(15,15,675,295);
+        //UI sp1.setBounds(15,15,725,295);
         modelCart1 = new DefaultTableModel(cart1.toArray(new String[0][0]), columnNames);
         cart1Table = new JTable(modelCart1){
             public boolean editCellAt(int row, int column, java.util.EventObject e) {
@@ -156,7 +170,7 @@ public class CartUI extends JFrame implements ActionListener {
 
 
         JScrollPane sp2 = new JScrollPane();
-        sp2.setBounds(15,15,725,295);
+        sp2.setBounds(15,15,675,295);
         modelCart2 = new DefaultTableModel(cart2.toArray(new String[0][0]), columnNames);
         cart2Table = new JTable(modelCart2){
             public boolean editCellAt(int row, int column, java.util.EventObject e) {
@@ -179,7 +193,7 @@ public class CartUI extends JFrame implements ActionListener {
 
 
         JScrollPane sp3 = new JScrollPane();
-        sp3.setBounds(15,15,725,295);
+        sp3.setBounds(15,15,675,295);
         modelCart3 = new DefaultTableModel(cart3.toArray(new String[0][0]), columnNames);
         cart3Table = new JTable(modelCart3){
             public boolean editCellAt(int row, int column, java.util.EventObject e) {
@@ -201,7 +215,7 @@ public class CartUI extends JFrame implements ActionListener {
         cart3Panel.add(sp3);
 
         JScrollPane sp4 = new JScrollPane();
-        sp4.setBounds(15,15,725,295);
+        sp4.setBounds(15,15,675,295);
         modelCart4 = new DefaultTableModel(cart4.toArray(new String[0][0]), columnNames);
         cart4Table = new JTable(modelCart4){
             public boolean editCellAt(int row, int column, java.util.EventObject e) {
@@ -224,11 +238,13 @@ public class CartUI extends JFrame implements ActionListener {
 
 
         JLabel lblCart1Count = new JLabel("Count: ");
-        lblCart1Count.setBounds(35,320,50,30);
+        lblCart1Count.setBounds(20,320,40,30);
+        //UI lblCart1Count.setBounds(35,320,50,30);
         cart1Panel.add(lblCart1Count);
 
         txtCart1Count = new JPlaceholderTextField("");
-        txtCart1Count.setBounds(100,320,140,30);
+        txtCart1Count.setBounds(75,320,140,30);
+        //UI txtCart1Count.setBounds(100,320,140,30);
         txtCart1Count.setFont(my_font);
         txtCart1Count.setEditable(false);
         txtCart1Count.setFocusable(false);
@@ -236,59 +252,69 @@ public class CartUI extends JFrame implements ActionListener {
 
 
         JLabel lblCart1Total = new JLabel("Total: ");
-        lblCart1Total.setBounds(260,320,50,30);
+        lblCart1Total.setBounds(235,320,40,30);
+        //UI lblCart1Total.setBounds(260,320,50,30);
         cart1Panel.add(lblCart1Total);
 
         txtCart1Total = new JPlaceholderTextField("");
-        txtCart1Total.setBounds(330,320,140,30);
+        txtCart1Total.setBounds(290,320,140,30);
+        //UI txtCart1Total.setBounds(330,320,140,30);
         txtCart1Total.setFont(my_font);
         txtCart1Total.setEditable(false);
         txtCart1Total.setFocusable(false);
         cart1Panel.add(txtCart1Total);
 
         btnCart1Bill = new RoundButton("Print");
-        btnCart1Bill.setBounds(490,320,100,30);
+        btnCart1Bill.setBounds(460,320,100,30);
+        //UI btnCart1Bill.setBounds(490,320,100,30);
         btnCart1Bill.setFont(my_font);
         cart1Panel.add(btnCart1Bill);
         btnCart1Bill.addActionListener(this);
 
         btnCart1Clear = new RoundButton("Clear");
-        btnCart1Clear.setBounds(610,320,100,30);
+        btnCart1Clear.setBounds(580,320,100,30);
+        //UI btnCart1Clear.setBounds(610,320,100,30);
         btnCart1Clear.setFont(my_font);
         cart1Panel.add(btnCart1Clear);
         btnCart1Clear.addActionListener(this);
 
 
         JLabel lblCart2Count = new JLabel("Count: ");
-        lblCart2Count.setBounds(35,320,50,30);
+        lblCart2Count.setBounds(20,320,40,30);
+        //UI lblCart2Count.setBounds(35,320,50,30);
         cart2Panel.add(lblCart2Count);
 
         txtCart2Count = new JPlaceholderTextField("");
-        txtCart2Count.setBounds(100,320,140,30);
+        txtCart2Count.setBounds(75,320,140,30);
+        //UI txtCart2Count.setBounds(100,320,140,30);
         txtCart2Count.setFont(my_font);
         txtCart2Count.setEditable(false);
         txtCart2Count.setFocusable(false);
         cart2Panel.add(txtCart2Count);
 
         JLabel lblCart2Total = new JLabel("Total: ");
-        lblCart2Total.setBounds(260,320,50,30);
+        lblCart2Total.setBounds(235,320,40,30);
+        //UI lblCart2Total.setBounds(260,320,50,30);
         cart2Panel.add(lblCart2Total);
 
         txtCart2Total = new JPlaceholderTextField("");
-        txtCart2Total.setBounds(330,320,140,30);
+        txtCart2Total.setBounds(290,320,140,30);
+        //UI txtCart2Total.setBounds(330,320,140,30);
         txtCart2Total.setFont(my_font);
         txtCart2Total.setEditable(false);
         txtCart2Total.setFocusable(false);
         cart2Panel.add(txtCart2Total);
 
         btnCart2Bill = new RoundButton("Print");
-        btnCart2Bill.setBounds(490,320,100,30);
+        btnCart2Bill.setBounds(460,320,100,30);
+        //UI btnCart2Bill.setBounds(490,320,100,30);
         btnCart2Bill.setFont(my_font);
         cart2Panel.add(btnCart2Bill);
         btnCart2Bill.addActionListener(this);
 
         btnCart2Clear = new RoundButton("Clear");
-        btnCart2Clear.setBounds(610,320,100,30);
+        //UI btnCart2Clear.setBounds(610,320,100,30);
+        btnCart2Clear.setBounds(580,320,100,30);
         btnCart2Clear.setFont(my_font);
         cart2Panel.add(btnCart2Clear);
         btnCart2Clear.addActionListener(this);
@@ -296,70 +322,82 @@ public class CartUI extends JFrame implements ActionListener {
 
 
         JLabel lblCart3Count = new JLabel("Count: ");
-        lblCart3Count.setBounds(35,320,50,30);
+        lblCart3Count.setBounds(20,320,40,30);
+        //UI lblCart3Count.setBounds(35,320,50,30);
         cart3Panel.add(lblCart3Count);
 
         txtCart3Count = new JPlaceholderTextField("");
-        txtCart3Count.setBounds(100,320,140,30);
+        txtCart3Count.setBounds(75,320,140,30);
+        //UI txtCart3Count.setBounds(100,320,140,30);
         txtCart3Count.setFont(my_font);
         txtCart3Count.setEditable(false);
         txtCart3Count.setFocusable(false);
         cart3Panel.add(txtCart3Count);
 
         JLabel lblCart3Total = new JLabel("Total: ");
-        lblCart3Total.setBounds(260,320,50,30);
+        lblCart3Total.setBounds(235,320,40,30);
+        //UI lblCart3Total.setBounds(260,320,50,30);
         cart3Panel.add(lblCart3Total);
 
         txtCart3Total = new JPlaceholderTextField("");
-        txtCart3Total.setBounds(330,320,140,30);
+        txtCart3Total.setBounds(290,320,140,30);
+        //UI txtCart3Total.setBounds(330,320,140,30);
         txtCart3Total.setFont(my_font);
         txtCart3Total.setEditable(false);
         txtCart3Total.setFocusable(false);
         cart3Panel.add(txtCart3Total);
 
         btnCart3Bill = new RoundButton("Print");
-        btnCart3Bill.setBounds(490,320,100,30);
+        btnCart3Bill.setBounds(460,320,100,30);
+        //UI btnCart3Bill.setBounds(490,320,100,30);
         btnCart3Bill.setFont(my_font);
         cart3Panel.add(btnCart3Bill);
         btnCart3Bill.addActionListener(this);
 
         btnCart3Clear = new RoundButton("Clear");
-        btnCart3Clear.setBounds(610,320,100,30);
+        btnCart3Clear.setBounds(580,320,100,30);
+        //UI btnCart3Clear.setBounds(610,320,100,30);
         btnCart3Clear.setFont(my_font);
         cart3Panel.add(btnCart3Clear);
         btnCart3Clear.addActionListener(this);
 
 
         JLabel lblCart4Count = new JLabel("Count: ");
-        lblCart4Count.setBounds(35,320,50,30);
+        lblCart4Count.setBounds(20,320,40,30);
+        //UI lblCart4Count.setBounds(35,320,50,30);
         cart4Panel.add(lblCart4Count);
 
         txtCart4Count = new JPlaceholderTextField("");
-        txtCart4Count.setBounds(100,320,140,30);
+        txtCart4Count.setBounds(75,320,140,30);
+        //UI txtCart4Count.setBounds(100,320,140,30);
         txtCart4Count.setFont(my_font);
         txtCart4Count.setEditable(false);
         txtCart4Count.setFocusable(false);
         cart4Panel.add(txtCart4Count);
 
         JLabel lblCart4Total = new JLabel("Total: ");
-        lblCart4Total.setBounds(260,320,50,30);
+        lblCart4Total.setBounds(235,320,40,30);
+        //UI lblCart4Total.setBounds(260,320,50,30);
         cart4Panel.add(lblCart4Total);
 
         txtCart4Total = new JPlaceholderTextField("");
-        txtCart4Total.setBounds(330,320,140,30);
+        txtCart4Total.setBounds(290,320,140,30);
+        //UI txtCart4Total.setBounds(330,320,140,30);
         txtCart4Total.setFont(my_font);
         txtCart4Total.setEditable(false);
         txtCart4Total.setFocusable(false);
         cart4Panel.add(txtCart4Total);
 
         btnCart4Bill = new RoundButton("Print");
-        btnCart4Bill.setBounds(490,320,100,30);
+        btnCart4Bill.setBounds(460,320,100,30);
+        //UI btnCart4Bill.setBounds(490,320,100,30);
         btnCart4Bill.setFont(my_font);
         cart4Panel.add(btnCart4Bill);
         btnCart4Bill.addActionListener(this);
 
         btnCart4Clear = new RoundButton("Clear");
-        btnCart4Clear.setBounds(610,320,100,30);
+        btnCart4Clear.setBounds(580,320,100,30);
+        //UI btnCart4Clear.setBounds(610,320,100,30);
         btnCart4Clear.setFont(my_font);
         cart4Panel.add(btnCart4Clear);
         btnCart4Clear.addActionListener(this);
@@ -657,23 +695,24 @@ public class CartUI extends JFrame implements ActionListener {
 
     private void generatePDFFromTable(JTable table, String totalAmount, String totalCount, int cartNo){
         try {
-            Document doc = new Document(new com.itextpdf.text.Rectangle(PageSize.A7));
-            doc.setMargins(-10,-10,3,3);
+            Document doc = new Document(new com.itextpdf.text.Rectangle(80,210));
+            doc.setMargins(-8,-8,0,3);
 
             Document backend_doc = new Document(new com.itextpdf.text.Rectangle(PageSize.A7));
-            backend_doc.setMargins(-10,-10,3,3);
+            backend_doc.setMargins(-8,-8,3,3);
 
-            PdfWriter.getInstance(doc, new FileOutputStream("D:\\Barcode\\bills\\bill_"+new SimpleDateFormat("dd_MM_yyyy__HH_mm").format(new Date())+".pdf"));
-            PdfWriter.getInstance(backend_doc, new FileOutputStream("D:\\Barcode\\bills\\backend_bill_"+new SimpleDateFormat("dd_MM_yyyy__HH_mm").format(new Date())+".pdf"));
+            String billName="D:\\Barcode\\bills\\bill_"+new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss").format(new Date())+".pdf";
+            PdfWriter.getInstance(doc, new FileOutputStream(billName));
+            PdfWriter.getInstance(backend_doc, new FileOutputStream("D:\\Barcode\\bills\\backend_bill_"+new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss").format(new Date())+".pdf"));
 
             doc.open();
             backend_doc.open();
 
-            com.itextpdf.text.Font font =  FontFactory.getFont("",7);
+            com.itextpdf.text.Font font =  FontFactory.getFont(FontFactory.TIMES_ROMAN,3);
 
             PdfPTable pdfTable = new PdfPTable(table.getColumnCount()-2);
 
-            float[] columnWidths = new float[]{3f, 10f, 7f, 6f, 5f, 7f};
+            float[] columnWidths = new float[]{4f, 9f, 7f, 6f, 5f, 7f};
             pdfTable.setWidths(columnWidths);
             //adding table headers
             for (int i = 0; i < table.getColumnCount(); i++) {
@@ -721,17 +760,63 @@ public class CartUI extends JFrame implements ActionListener {
             doc = addHeadersInPDF(doc);
             doc.add(pdfTable);
             doc.add(new Paragraph("            Items Count : " + totalCount, font));
-            doc.add(new Paragraph("            Total Amount : Rs. " + String.format("%.2f", Double.parseDouble(totalAmount)), FontFactory.getFont("",7, Font.BOLD)));
+            doc.add(new Paragraph("         Total Amount : Rs. " + String.format("%.2f", Double.parseDouble(totalAmount)), FontFactory.getFont(FontFactory.TIMES_ROMAN,4, Font.BOLD)));
+
+//            PrinterJob job = PrinterJob.getPrinterJob();
+//            PageFormat pf = job.defaultPage();
+//            Paper p = pf.getPaper();
+//            int resolution = 72; // dpi
+//            p.setSize(UnitConv.mm2px(62, resolution), UnitConv.mm2px(40, resolution));
+//            p.setImageableArea(0, 0, UnitConv.mm2px(62, resolution), UnitConv.mm2px(40, resolution));
+//            pf.setPaper(doc);
+//            pf.setOrientation(PageFormat.LANDSCAPE);
+//
+//            job.setPrintable(this, pf);
+//
+//            if (job.printDialog()) {
+//                try {
+//                    job.print();
+//                } catch (Exception PrintException) {
+//                    PrintException.printStackTrace();
+//                }
+//            }
+
             doc.close();
+
+            //Print
+            System.out.println(new File(billName));
+            PDDocument document = new PDDocument();
+            document = PDDocument.load(new File(billName));
+            PrintService myPrintService = findPrintService("Darshit Printer");
+            if(myPrintService != null) {
+                PrinterJob job = PrinterJob.getPrinterJob();
+                job.setPageable(new PDFPageable(document));
+                job.setPrintService(myPrintService);
+                try {
+                    job.print();
+                } catch (Exception e) {
+                    StringWriter sw = new StringWriter();
+                    e.printStackTrace(new PrintWriter(sw));
+                    String exceptionAsString = sw.toString();
+                    SCUtils.logErrors("PRINT BILL:\n"+exceptionAsString);
+                    JOptionPane.showMessageDialog(null, "Error printing bill: "+e);
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Cannot find printer");
+                SCUtils.logErrors("FINDING PRINTER\n");
+            }
+            document.close();
+
 
             backend_doc = addHeadersInPDF(backend_doc);
             backend_doc.add(backend_pdfTable);
             backend_doc.add(new Paragraph("            Items Count : " + totalCount, font));
             double totalWithoutGST = Double.parseDouble(totalAmount)-totalCGST-totalSGST;
-            backend_doc.add(new Paragraph("            Total Amount without GST : Rs. " + String.format("%.2f", totalWithoutGST), FontFactory.getFont("",7, Font.BOLD)));
-            backend_doc.add(new Paragraph("            Total CGST : Rs. " + String.format("%.2f", totalCGST), FontFactory.getFont("",7, Font.BOLD)));
-            backend_doc.add(new Paragraph("            Total SGST : Rs. " + String.format("%.2f", totalSGST), FontFactory.getFont("",7, Font.BOLD)));
-            backend_doc.add(new Paragraph("            Total Amount : Rs. " + String.format("%.2f", Double.parseDouble(totalAmount)), FontFactory.getFont("",7, Font.BOLD)));
+            backend_doc.add(new Paragraph("            Total Amount without GST : Rs. " + String.format("%.2f", totalWithoutGST), FontFactory.getFont(FontFactory.TIMES_ROMAN,4, Font.BOLD)));
+            backend_doc.add(new Paragraph("            Total CGST : Rs. " + String.format("%.2f", totalCGST), FontFactory.getFont(FontFactory.TIMES_ROMAN,7, Font.BOLD)));
+            backend_doc.add(new Paragraph("            Total SGST : Rs. " + String.format("%.2f", totalSGST), FontFactory.getFont(FontFactory.TIMES_ROMAN,7, Font.BOLD)));
+            backend_doc.add(new Paragraph("         Total Amount : Rs. " + String.format("%.2f", Double.parseDouble(totalAmount)), FontFactory.getFont(FontFactory.TIMES_ROMAN,4, Font.BOLD)));
             backend_doc.close();
 
 
@@ -755,9 +840,9 @@ public class CartUI extends JFrame implements ActionListener {
 
             //Font font = new Font("",Font.PLAIN, 10);
 
-            com.itextpdf.text.Font font =  FontFactory.getFont("",7);
+            com.itextpdf.text.Font font =  FontFactory.getFont(FontFactory.TIMES_ROMAN,3);
 
-            p = new Paragraph("\n  PRAGJI HANSRAJ & CO.",FontFactory.getFont("",7, Font.BOLD));
+            p = new Paragraph("\n  PRAGJI HANSRAJ & CO.",FontFactory.getFont(FontFactory.TIMES_ROMAN,4, Font.BOLD));
             p.setAlignment(Element.ALIGN_CENTER);
             doc.add(p);
 
@@ -773,13 +858,12 @@ public class CartUI extends JFrame implements ActionListener {
             p.setAlignment(Element.ALIGN_CENTER);
             doc.add(p);
 
-            p = new Paragraph("   _______________________________________________", font);
+            p = new Paragraph("   ___________________________________________", font);
             p.setAlignment(Element.ALIGN_CENTER);
-            p.setSpacingBefore(-5);
-            p.setSpacingAfter(5);
+            p.setSpacingBefore(-4);
             doc.add(p);
 
-            doc.add(new Paragraph("           GSTIN: 27AAIPT422A1Z1  FSSAI LIC NO: 11516018000720", font));
+            doc.add(new Paragraph("           GSTIN:27AAIPT422A1Z1 FSSAI LIC NO:11516018000720", FontFactory.getFont(FontFactory.TIMES_ROMAN,3)));
             doc.add(new Paragraph("           Date & Time : " + new SimpleDateFormat("yyyy/MM/dd   HH:mm").format(new Date()) + "\n\n", font));
         }
         catch (Exception e) {
@@ -819,9 +903,24 @@ public class CartUI extends JFrame implements ActionListener {
         }
     }
 
+    private static PrintService findPrintService(String printerName) {
+        PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+        for (PrintService printService : printServices) {
+            if (printService.getName().trim().equals(printerName)) {
+                return printService;
+            }
+        }
+        return null;
+    }
+
 //    private boolean addToCart(String[] product, int cartNo, int quantity){
 //        return true;
 //    }
 
+    public static void main(String[] args) {
+        new CartUI();
+        System.out.println(PageSize.A7);
+
+    }
 
 }

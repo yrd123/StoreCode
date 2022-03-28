@@ -97,7 +97,6 @@ public class Product {
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             String exceptionAsString = sw.toString();
-            SCUtils.logErrors("GET PROD NAME WITH ID:\n"+exceptionAsString);
             JOptionPane.showMessageDialog(null,"Error Getting Product Name with given id");
             //new AddCustomer();
         }

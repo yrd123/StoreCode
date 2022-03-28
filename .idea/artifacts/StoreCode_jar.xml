@@ -1,20 +1,19 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="StoreCode:jar">
-    <output-path>D:/Barcode/StoreCode/artifacts</output-path>
+    <output-path>$PROJECT_DIR$/out/artifacts/StoreCode_jar</output-path>
     <root id="archive" name="StoreCode.jar">
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="D:/Barcode/StoreCode/META-INF/MANIFEST.MF" />
-      </element>
       <element id="module-output" name="StoreCode" />
-      <element id="extracted-dir" path="D:/Barcode/req jar/jcommander-1.78.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="D:/Barcode/req jar/javase-3.4.1.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="D:/Barcode/req jar/core-3.4.1.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="D:/Barcode/req jar/barcode4j-2.1.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="D:/Barcode/req jar/jai-imageio-core-1.4.0.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="D:/Barcode/req jar/h2-2.1.210.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/Barcode/req jar/postgresql-42.2.20.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/Barcode/req jar/rs2xml.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/Barcode/req jar/jcommander-1.78.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/Barcode/req jar/h2-2.1.210.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/Barcode/req jar/commons-logging-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/Barcode/req jar/javase-3.4.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/Barcode/req jar/pdfbox-2.0.25.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/Barcode/req jar/itextpdf-5.4.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/Barcode/req jar/barcode4j-2.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/Barcode/req jar/jai-imageio-core-1.4.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/Barcode/req jar/core-3.4.1.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
